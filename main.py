@@ -1,7 +1,7 @@
 import functions
 welcome = "Welcome to the Python Weather application"
 
-userZipCode = input("Please enter valid 5 digit local zipcode: ")
+userZipCode = functions.userZipCodeInput()
 
 latitude, longitude, userZipCode = functions.GeoLocation(userZipCode)
 
