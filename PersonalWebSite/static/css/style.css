@@ -1,0 +1,27 @@
+*{
+    color: black;
+    font-family: 'Courier New', Courier, monospace;
+}
+body{
+    background-color: #e7dfd8;
+}
+#topWelcome{
+    text-align: center;
+    font-size: 40;
+    font-weight: 1;
+    line-height: 1;
+}
+#topNav{
+    text-align: center;
+}
+#welcome{
+    text-align: left;
+}
+#author{
+    text-align: center;
+    font-weight: 1;
+}
+#subWelcome{
+    text-align: center;
+    font-size: 20;
+}
