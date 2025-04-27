@@ -2,7 +2,7 @@ from django.test import TestCase
 import requests
 # Create your tests here.
 
-key = "Fu5mqpximlSEDp6LZOcCcVktlalCMe5wcHbAef6T"
+key = "sample"
 url = "https://api.congress.gov/v3/member?api_key="
 
 keyURL = url + key
