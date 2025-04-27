@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}NavBar{% endblock %}</title>
+    <link rel="stylesheet" type= "text/css" href="{% static 'css/style.css'%}">
+</head>
+<body>
+    <header>
+        <h1 id="topWelcome"> Kru's Cyber Space</h1>
+        <nav id="topNav">
+            <a href="\">| Home |</a>
+            <a href="\weather">| Weather |</a>
+        </nav>
+    </header>
+    <!-- Anything above ^^^ is template, anything below is content of each specific child page -->
+    {% block content %}{% endblock %}
+    <footer>
+        <p>&copy; Kru Patel</p>
+        <p><a href="#">Back to Top</a></p>
+    </footer>
+</body>
+</html>

@@ -1,28 +1,14 @@
-<!DOCTYPE html>
-{% load static %}
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="author" content="Kru Patel">
-        <meta name="description" content="This is my personal site">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Kru's Cyber Space</title>
-        <link rel="stylesheet" type= "text/css" href="{% static 'css/style.css'%}">
-    </head>
-    <body>
-        <header>
-            <h1 id="topWelcome"> Kru's Cyber Space</h1>
-            <nav id="topNav">
-                <a href="\">| Home |</a>
-            </nav>
-        </header>
-        <br>
+{% extends 'base.html' %}
+
+{% block title %}Kru's Cyber Space{% endblock %}
+
+{% block content %}
+    <br>
     <fieldset>
-    <legend id="welcome">Welcome</legend>
+        <legend id="welcome">Welcome</legend>
 
-    <h1 id="author">Author: Kru Patel</h1>
-    <p id="subWelcome">I am just a normal nerd who loves random things.  Look around to find those random things</p>
-
+        <h1 id="author">Author: Kru Patel</h1>
+        <p id="subWelcome">I am just a normal nerd who loves random things. Look around to find those random things</p>
     </fieldset>
 
     <article id="contact">
@@ -47,6 +33,9 @@
                     pattern="[0-9]{3}[0-9]{3}[0-9]{4}" required>
             </p>
         </fieldset>
+
+            <br>
+
         <fieldset>
             <legend>Send Me A Note</legend>
             <label for="message">Your Message:</label>
@@ -59,9 +48,4 @@
         <button type="reset">Reset</button>
     </form>
     </article>
-    </body>
-    <footer>
-            <P>&copy; Kru Patel</P>
-            <P><a href="#">Back to Top</a></P>
-    </footer>
-</html>
+{% endblock %}

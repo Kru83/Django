@@ -1,12 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block title %}Weather Application{% endblock %}
+
+{% block content %}
     <H1>Weather Application</H1>
     <p>Weather Application Project</p>
-</body>
-</html>
+    <form method="POST">
+        {%  csrf_token %}
+        <label for= "zipcode">Enter Your Zip Code</label> <br>
+        <input type = "text" id="zipcode" name = "zipCode" required> <br>
+    <button type="submit" name="form_type" value="zip">Get Weather by ZIP</button>
+    </form>
+
+    <br>
+    <br>
+
+    <form method="POST">
+        {% csrf_token %}
+        <label for="nearby">Nearby Location:</label><br>
+        <button type="submit" name="form_type" value="nearby">Get Nearby Weather</button>
+    </form>
+    {% if city %}
+        <h2> Weather Forecast for {{ city }}, {{ state }}</h2>
+        <p><strong>{{ foreCastTime }}</strong>: {{ detailedForecast }}</p>
+        <p>Temperature: {{ temperature }} {{ temperatureUnit }}</p>
+    {% endif %}
+
+{% endblock %}
