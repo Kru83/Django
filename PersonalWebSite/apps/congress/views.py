@@ -1,8 +1,18 @@
 from django.shortcuts import render
 
-# Create your views here.
-def congress(request):
-    return render (request, 'congress.html')
+from apps import congress
+from apps.congress.congress import *
 
-#def homepage(request):
-#    return render (request, 'index.html')
+
+# Create your views here.
+#def congress(request):
+#    return render (request, 'congress.html')
+
+def memberByStateView(request):
+    if request.method == 'POST':
+        stateCode = request.POST.get('state')
+        htmlSelectData = congressMemberByState(stateCode)
+        members = congressMemberListByState(htmlSelectData)
+        return render(request, "congress.html", {'members': members, 'stateCode': stateCode})
+    else:
+        return render(request,'congress.html')
