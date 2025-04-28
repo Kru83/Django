@@ -1,9 +1,9 @@
 from django.shortcuts import render
-from PersonalWebSite.weather_zipcode import *
-from PersonalWebSite.weather_nearby import *
 
-def homepage(request):
-    return render (request, 'index.html')
+from apps.weather.weather_nearby import *
+from apps.weather.weather_zipcode import *
+
+# Create your views here.
 
 def weather(request):
     weatherDataContext = {}
@@ -26,7 +26,7 @@ def weather(request):
         temperatureUnit = foreCastData["properties"]["periods"][0]["temperatureUnit"]
         detailedForecast = foreCastData["properties"]["periods"][0]["detailedForecast"]
         foreCastTime = foreCastData["properties"]["periods"][0]["name"]
-        
+
         weatherDataContext = {
             'city': city,
             'state': state,
@@ -64,4 +64,4 @@ def weather(request):
             'foreCastTime': foreCastTime
         }
 
-    return render (request, 'weather.html', weatherDataContext)
+    return render(request, 'weather.html', weatherDataContext)

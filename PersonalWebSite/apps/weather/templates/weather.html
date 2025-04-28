@@ -8,13 +8,11 @@
     <form method="POST">
         {%  csrf_token %}
         <label for= "zipcode">Enter Your Zip Code</label> <br>
-        <input type = "text" id="zipcode" name = "zipCode" required> <br>
+        <input type = "text" id="zipcode" name = "zipCode" pattern="[0-9]{5}" placeholder="08201" required> <br>
     <button type="submit" name="form_type" value="zip">Get Weather by ZIP</button>
     </form>
-
     <br>
     <br>
-
     <form method="POST">
         {% csrf_token %}
         <label for="nearby">Nearby Location:</label><br>
