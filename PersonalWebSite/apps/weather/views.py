@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from weather.weather_nearby import *
-from weather.weather_zipcode import *
+
+from apps.weather.weather_nearby import *
+from apps.weather.weather_zipcode import *
 
 # Create your views here.
 
@@ -63,4 +64,4 @@ def weather(request):
             'foreCastTime': foreCastTime
         }
 
-    return render(request, 'Weather/weather.html', weatherDataContext)
+    return render(request, 'weather.html', weatherDataContext)
