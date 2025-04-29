@@ -3,13 +3,14 @@
 {% block title %}Weather Application{% endblock %}
 
 {% block content %}
-    <H1>Weather Application</H1>
+    <h1>Weather Application</h1>
     <p>Weather Application Project</p>
+
     <form method="POST">
-        {%  csrf_token %}
-        <label for= "zipcode">Enter Your Zip Code</label> <br>
-        <input type = "text" id="zipcode" name = "zipCode" pattern="[0-9]{5}" placeholder="08201" required> <br>
-    <button type="submit" name="form_type" value="zip">Get Weather by ZIP</button>
+        {% csrf_token %}
+        <label for="zipcode">Enter Your Zip Code</label> <br>
+        <input type="text" id="zipcode" name="zipCode" pattern="[0-9]{5}" placeholder="08201" required> <br>
+        <button type="submit" name="form_type" value="zip">Get Weather by ZIP</button>
     </form>
     <br>
     <br>
@@ -18,10 +19,41 @@
         <label for="nearby">Nearby Location:</label><br>
         <button type="submit" name="form_type" value="nearby">Get Nearby Weather</button>
     </form>
-    {% if city %}
-        <h2> Weather Forecast for {{ city }}, {{ state }}</h2>
-        <p><strong>{{ foreCastTime }}</strong>: {{ detailedForecast }}</p>
-        <p>Temperature: {{ temperature }} {{ temperatureUnit }}</p>
-    {% endif %}
 
+    {% if city %}
+        <h2>Weather Forecast for {{ city }}, {{ state }}</h2>
+
+        <!-- Daily Forecast Section -->
+        <div class="daily-forecast-container">
+            <h3>Daily Forecast</h3>
+            <div class="forecast-container">
+                {% for forecast in forecast %}
+                    <div class="forecast-block">
+                        <h4>{{ forecast.name }}</h4>
+                        <p><strong>Temperature:</strong> {{ forecast.temperature }}°{{ forecast.temperatureUnit }}</p>
+                        <p><strong>Short Forecast:</strong> {{ forecast.shortForecast }}</p>
+                        <p><strong>Details:</strong> {{ forecast.detailedForecast }}</p>
+                        <p><strong>Precipitation Probability:</strong> {{ forecast.precipitationProbability }}</p>
+                        <img src="{{ forecast.icon }}" alt="Weather Icon">
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Hourly Forecast Section -->
+        <div class="hourly-forecast-container">
+            <h3>Hourly Forecast for {{ hourlyDate }}</h3>
+            <div class="hourly-forecast">
+                {% for hour in hourlyForecast %}
+                    <div class="hour-block">
+                        <h4>{{ hour.startTime }} - {{ hour.endTime }}</h4>
+                        <p><strong>Temperature:</strong> {{ hour.temperature }}°{{ hour.temperatureUnit }}</p>
+                        <p><strong>Forecast:</strong> {{ hour.shortForecast }}</p>
+                        <p><strong>Precipitation Probability:</strong> {{ hour.precipitationProbability }}</p>
+                        <img src="{{ hour.icon }}" alt="Weather Icon">
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}

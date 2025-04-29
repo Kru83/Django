@@ -1,67 +1,125 @@
 from django.shortcuts import render
+from datetime import datetime
 
 from apps.weather.weather_nearby import *
 from apps.weather.weather_zipcode import *
 
-# Create your views here.
-
-def weather(request):
+def weatherView(request):
     weatherDataContext = {}
+
     if request.POST.get('form_type') == 'zip':
         userCountryCode = "US"
         zipCode = request.POST.get('zipCode')
 
-        latitude, longitude, zipCode, countryCode = GeoLocation(zipCode, userCountryCode)
-
-        weatherData = WeatherData(latitude, longitude)
+        # Get latitude, longitude from the zip code
+        latitude, longitude, zipCode, countryCode = geoLocation(zipCode, userCountryCode)
+        weatherData = weather(latitude, longitude)
 
         city = weatherData["properties"]["relativeLocation"]["properties"]["city"]
         state = weatherData["properties"]["relativeLocation"]["properties"]["state"]
 
-        foreCastRequest = weatherData["properties"]["forecast"]
+        # Get daily forecast
+        daily_url = weatherData["properties"]["forecast"]
+        foreCastData = foreCast(daily_url)
+        dailyForecast = foreCastData["properties"]["periods"]
 
-        foreCastData = ForeCastData(foreCastRequest)
+        # Get hourly forecast from forecastHourly URL
+        hourly_url = weatherData["properties"]["forecastHourly"]
+        hourly_data = foreCast(hourly_url)
+        hourlyForecast = hourly_data["properties"]["periods"]
 
-        temperature = foreCastData["properties"]["periods"][0]["temperature"]
-        temperatureUnit = foreCastData["properties"]["periods"][0]["temperatureUnit"]
-        detailedForecast = foreCastData["properties"]["periods"][0]["detailedForecast"]
-        foreCastTime = foreCastData["properties"]["periods"][0]["name"]
+        # Format startTime and endTime for hourly forecast
+        for hour in hourlyForecast:
+            # Convert ISO 8601 to 12-hour format
+            start_time = hour['startTime']
+            end_time = hour['endTime']
+
+            # Parse the ISO 8601 string and convert to 12-hour format with AM/PM
+            hour['startTime'] = datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S%z").strftime("%I:%M %p")
+            hour['endTime'] = datetime.strptime(end_time, "%Y-%m-%dT%H:%M:%S%z").strftime("%I:%M %p")
+
+        # Get the current date based on the first hourly forecast
+        if hourlyForecast:
+            first_hour = datetime.strptime(hourlyForecast[0]['startTime'], "%I:%M %p")
+            hourly_date = first_hour.strftime("%A, %B %d, %Y")  # Format: Tuesday, April 29, 2025
+        else:
+            hourly_date = "N/A"
+
+        forecast_list = []
+        for period in dailyForecast:
+            forecast_list.append({
+                'name': period["name"],
+                'temperature': period["temperature"],
+                'temperatureUnit': period["temperatureUnit"],
+                'shortForecast': period["shortForecast"],
+                'detailedForecast': period["detailedForecast"],
+                'precipitationProbability': period.get("precipitationProbability", "N/A"),
+                'icon': period["icon"]
+            })
 
         weatherDataContext = {
             'city': city,
             'state': state,
-            'temperature': temperature,
-            'temperatureUnit': temperatureUnit,
-            'detailedForecast': detailedForecast,
-            'foreCastTime': foreCastTime
+            'forecast': forecast_list,
+            'hourlyForecast': hourlyForecast,
+            'hourlyDate': hourly_date  # Pass the current date for hourly forecast
         }
+
     elif request.POST.get('form_type') == 'nearby':
         ipAddressData = ipAddress()
 
         latitude = ipAddressData["geoplugin_latitude"]
         longitude = ipAddressData["geoplugin_longitude"]
-
-        weatherData = WeatherData(latitude, longitude)
+        weatherData = weather(latitude, longitude)
 
         city = weatherData["properties"]["relativeLocation"]["properties"]["city"]
         state = weatherData["properties"]["relativeLocation"]["properties"]["state"]
 
-        foreCastRequest = weatherData["properties"]["forecast"]
+        # Get daily forecast
+        daily_url = weatherData["properties"]["forecast"]
+        foreCastData = foreCast(daily_url)
+        dailyForecast = foreCastData["properties"]["periods"]
 
-        foreCastData = ForeCastData(foreCastRequest)
+        # Get hourly forecast from forecastHourly URL
+        hourly_url = weatherData["properties"]["forecastHourly"]
+        hourly_data = foreCast(hourly_url)
+        hourlyForecast = hourly_data["properties"]["periods"]
 
-        temperature = foreCastData["properties"]["periods"][0]["temperature"]
-        temperatureUnit = foreCastData["properties"]["periods"][0]["temperatureUnit"]
-        detailedForecast = foreCastData["properties"]["periods"][0]["detailedForecast"]
-        foreCastTime = foreCastData["properties"]["periods"][0]["name"]
+        # Format startTime and endTime for hourly forecast
+        for hour in hourlyForecast:
+            # Convert ISO 8601 to 12-hour format
+            start_time = hour['startTime']
+            end_time = hour['endTime']
+
+            # Parse the ISO 8601 string and convert to 12-hour format with AM/PM
+            hour['startTime'] = datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S%z").strftime("%I:%M %p")
+            hour['endTime'] = datetime.strptime(end_time, "%Y-%m-%dT%H:%M:%S%z").strftime("%I:%M %p")
+
+        # Get the current date based on the first hourly forecast
+        if hourlyForecast:
+            first_hour = datetime.strptime(hourlyForecast[0]['startTime'], "%I:%M %p")
+            hourly_date = first_hour.strftime("%A, %B %d, %Y")  # Format: Tuesday, April 29, 2025
+        else:
+            hourly_date = "N/A"
+
+        forecast_list = []
+        for period in dailyForecast:
+            forecast_list.append({
+                'name': period["name"],
+                'temperature': period["temperature"],
+                'temperatureUnit': period["temperatureUnit"],
+                'shortForecast': period["shortForecast"],
+                'detailedForecast': period["detailedForecast"],
+                'precipitationProbability': period.get("precipitationProbability", "N/A"),
+                'icon': period["icon"]
+            })
 
         weatherDataContext = {
             'city': city,
             'state': state,
-            'temperature': temperature,
-            'temperatureUnit': temperatureUnit,
-            'detailedForecast': detailedForecast,
-            'foreCastTime': foreCastTime
+            'forecast': forecast_list,
+            'hourlyForecast': hourlyForecast,
+            'hourlyDate': hourly_date  # Pass the current date for hourly forecast
         }
 
     return render(request, 'weather.html', weatherDataContext)

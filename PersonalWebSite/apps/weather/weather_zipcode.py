@@ -1,7 +1,7 @@
 import requests
 import pgeocode
 
-def GeoLocation(userZipCode, UserCountryCode):
+def geoLocation(userZipCode, UserCountryCode):
     nomi = pgeocode.Nominatim(UserCountryCode)
     geoLocationData = (nomi.query_postal_code(userZipCode))
     latitude = geoLocationData["latitude"]
@@ -11,22 +11,66 @@ def GeoLocation(userZipCode, UserCountryCode):
     return latitude, longitude, zipCode, countryCode
 
 # We are taking the lati and Longi response from above and getting weather data.
+def weather(latitude, longitude):
+    base_url = "https://api.weather.gov/points"
+    headers = {
+        "User-Agent": "www.kru.dev/1.0 (kru1983@gmail.com)",
+        "From": "kru1983@gmail.com"
+    }
 
-def WeatherData (latitude, longitude):
-    weatherRequest = "https://api.weather.gov/points/"
-    weatherResponse = requests.get(F"{weatherRequest}{latitude},{longitude}")
-    weatherStatusCode = (weatherResponse.status_code)
-    if weatherStatusCode == 200:
-        weatherData = weatherResponse.json()
+    try:
+        response = requests.get(f"{base_url}/{latitude},{longitude}", headers=headers)
+        response.raise_for_status()  # Raises exception for non-2xx responses
+        weatherData = response.json()
         return weatherData
-    else:
-        print(F"Error {weatherStatusCode}")
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching weather data: {e}")
+        return None
 
 #Take the forecast end point from WeatherData use it in this function
-def ForeCastData (foreCastRequest):
-    foreCastResponse = requests.get(F"{foreCastRequest}")
-    forecastData = foreCastResponse.json()
-    return forecastData
+def foreCast(forecast_url):
+    headers = {
+        "User-Agent": "www.kru.dev/1.0 (kru1983@gmail.com)",
+        "From": "kru1983@gmail.com"
+    }
+
+    try:
+        response = requests.get(forecast_url, headers=headers)
+        response.raise_for_status()  # Raises an exception for HTTP errors
+        forecastData = response.json()
+        return forecastData
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching forecast data: {e}")
+        return None
+
+
+import requests
+
+
+def get_hourly_forecast(latitude, longitude):
+    # Define the endpoint for hourly forecast based on latitude and longitude
+    hourly_forecast_url = f"https://api.weather.gov/gridpoints/TOP/{latitude},{longitude}/forecast/hourly"
+
+    headers = {
+        "User-Agent": "www.kru.dev/1.0 (kru1983@gmail.com)",
+        "From": "kru1983@gmail.com"
+    }
+
+    try:
+        # Make the request to the Weather API
+        response = requests.get(hourly_forecast_url, headers=headers)
+        response.raise_for_status()  # Check for successful response
+
+        # Return the entire JSON response as hourlyForecast
+        hourlyForecast = response.json()
+
+        return hourlyForecast  # Return the full JSON data for hourly forecast
+
+    except requests.exceptions.RequestException as e:
+        # Handle exceptions (e.g., network issues, invalid response)
+        print(f"Error fetching hourly forecast: {e}")
+        return None
+
 
 #allow user input to be 5 digit only, no alpha
 
