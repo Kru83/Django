@@ -1,0 +1,30 @@
+# Django-specific files
+*.log                    # Log files
+*.pot                    # Translation template files
+*.pyc                    # Compiled Python files
+__pycache__/             # Python cache directories
+local_settings.py        # Local settings, shouldn't be in version control
+db.sqlite3               # Local SQLite database (use PostgreSQL or MySQL in production)
+
+# Virtual Environment
+.env                     # Environment variables (including sensitive API keys)
+venv/                    # Virtual environment directories
+env/                     # Alternative virtual environment directory names
+.venv/
+
+# PyCharm-specific files
+.idea/                   # PyCharm project files
+
+# Other files
+.DS_Store                # macOS specific file
+Thumbs.db                # Windows specific file
+.coverage                # Coverage report files
+.tox/                    # Tox testing tool directories
+.eggs/                   # Python egg cache files
+
+# Docker-related files
+docker-compose-deploy.yml  # Deployment docker-compose file, to keep it out of version control if necessary
+
+# Miscellaneous
+*.swp                    # Vim swap files
+*.swo                    # Vim swap files
