@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apps.weather',
     'apps.congress',
-    'apps.homepage'
+    'apps.homepage',
+    'apps.bookgram'
 ]
 
 MIDDLEWARE = [

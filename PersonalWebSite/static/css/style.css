@@ -93,3 +93,95 @@ body{
     font-size: 14px;
     margin: 5px 0;
 }
+
+/* Base text and background styling */
+* {
+    color: black;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+body {
+    background-color: #e7dfd8;
+}
+
+/*  start book a gram CSS */
+
+/* Form Container */
+.form-container {
+    max-width: 400px;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    margin: 40px auto;
+}
+
+/* Headings */
+.form-container h2 {
+    text-align: center;
+    margin-bottom: 16px;
+    font-size: 24px;
+}
+
+/* Labels and Inputs */
+.form-container label {
+    display: block;
+    margin-top: 12px;
+    margin-bottom: 4px;
+}
+
+.form-container select,
+.form-container textarea {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+/* Textarea Sizing */
+.form-container textarea {
+    resize: vertical;
+    height: 100px;
+}
+
+/* Checkbox */
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    margin-top: 12px;
+}
+
+.checkbox-container label {
+    margin-left: 8px;
+}
+
+/* Submit Button */
+.form-container button[type="submit"] {
+    width: 100%;
+    margin-top: 16px;
+    padding: 10px;
+    cursor: pointer;
+    /* Add basic styling to match inputs */
+    box-sizing: border-box;
+    font-size: 16px;
+    /* Optional: add a simple border and subtle hover */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: border-color 0.3s ease;
+}
+
+.form-container button[type="submit"]:hover,
+.form-container button[type="submit"]:focus {
+    border-color: #888;
+    outline: none;
+}
+
+#response-text {
+    background-color: white;
+    padding: 15px;
+    border-radius: 5px;
+    font-size: 18px;
+    line-height: 1.5;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+}
+
+/*  end book a gram CSS */
+

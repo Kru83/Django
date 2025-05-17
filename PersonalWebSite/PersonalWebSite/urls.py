@@ -24,4 +24,5 @@ urlpatterns = [
     path('weather/', include('apps.weather.urls')),
     path('congress/', include('apps.congress.urls')),
     path('homepage/', include('apps.homepage.urls')),
+    path('bookgram/', include('apps.bookgram.urls')),
 ]

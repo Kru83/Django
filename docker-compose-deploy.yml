@@ -1,0 +1,21 @@
+services:
+  personalwebsite:
+    build:
+      context: .
+    volumes:
+      - static_data:/vol/web
+    environment:
+      - DJANGO_SECRET_KEY=django-insecure-k8^-ri^p8kmff+zq-hk-^=-^hj28*kci@c@pwn-5jy%2=n49_9
+      - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,www.kru.dev,kru.dev,https://www.kru.dev
+
+  proxy:
+    build:
+      context: ./proxy
+    volumes:
+      - static_data:/vol/static
+    ports:
+      - "8000:8000"
+    depends_on:
+      - personalwebsite
+volumes:
+  static_data:

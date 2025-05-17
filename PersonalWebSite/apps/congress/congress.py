@@ -4,8 +4,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 def congressMemberByState(state):
+    limit = 250
     state = state
-    url = F"https://api.congress.gov/v3/member/{state}"
+    url = F"https://api.congress.gov/v3/member/{state}?{limit}]"
     key = os.getenv('CONGRESS_API_KEY')
 
     headers = {

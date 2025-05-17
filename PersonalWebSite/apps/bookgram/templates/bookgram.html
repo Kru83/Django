@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Book a Gram{% endblock %}
+
+{% block content %}
+  <div class="form-container">
+    <h2>Select Book Genre</h2>
+    <form method="POST">
+              {% csrf_token %}
+      <label for="genre">Genre</label>
+      <select id="genre" name="genre">
+        <option value="romance">Romance</option>
+        <option value="thriller">Thriller</option>
+        <option value="fantasy">Fantasy</option>
+        <option value="sci-fi">Sci-Fi</option>
+        <option value="non-fiction">Non-Fiction</option>
+      </select>
+
+      <h2>Your Message</h2>
+      <label for="message">Message</label>
+      <textarea id="message" name="message" placeholder="Write your message here..."></textarea>
+
+      <div class="checkbox-container">
+        <input type="checkbox" id="sexytime" name="sexytime">
+        <label for="sexytime">Sexy Time</label>
+      </div>
+        <button type="submit" name="form_type" value="creategram">Create a Gram</button>
+    </form>
+
+      {% if response_text %}
+        <div id="response" style="margin-top: 30px;">
+        <h2>Your Personal Note</h2>
+        <p id="response-text" style="font-size: 18px; line-height: 1.5;">
+      {{ response_text }}
+        </p>
+  </div>
+    {% endif %}
+
+  </div>
+
+{% endblock %}
